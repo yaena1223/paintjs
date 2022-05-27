@@ -3,9 +3,12 @@ const ctx = canvas.getContext("2d");
 const colors = document.getElementsByClassName("jsColor");
 const range = document.getElementById("jsRange");
 const mode = document.getElementById("jsMode");
+const saveBtn = document.getElementById("jsSave");
+
 const INITIAL_COLOR = "#2c2c2c";
 const CANVAS_SIZE = 700;
 
+ctx.fillStyle = "white";
 canvas.width = CANVAS_SIZE;
 canvas.height = CANVAS_SIZE;
 
@@ -66,12 +69,32 @@ function handleCanvasClick(){
     
 
 }
+function handleSaveClick(event){
+    const image = canvas.toDataURL("image/g");
+    const link = document.createElement("a");
+    link.href = image;
+    link.download = "mypainting.png";
+    link.click();
+}
+function handleCM(event){
+    event.preventDefault()
+}
+
+function handleSaveClick() {
+    const image = canvas.toDataURL();
+    const link = document.createElement("a");
+    link.href = image;
+    link.download = "PaintJS[🎨]";
+    link.click();
+}
+
 if(canvas){
     canvas.addEventListener("mousemove",onMouseMove);
     canvas.addEventListener("mousedown",startPainting);
     canvas.addEventListener("mouseup",stopPainting);
     canvas.addEventListener("mouseleave",stopPainting);
     canvas.addEventListener("click",handleCanvasClick);
+    canvas.addEventListener("contextmenu",handleCM);
 }
 
 Array.from(colors).forEach(color => /*array를 해놓고 for each를 써서 color를 가질 수 있음*/
@@ -79,9 +102,13 @@ Array.from(colors).forEach(color => /*array를 해놓고 for each를 써서 colo
   );
 
 if(range){
-    range.addEventListener("input", handleRangeChange)
+    range.addEventListener("input", handleRangeChange);
 }
 
 if(mode){
-    mode.addEventListener("click",handleModeClick)
+    mode.addEventListener("click",handleModeClick);
+}
+
+if(saveBtn){
+    saveBtn.addEventListener("click",handleSaveClick);
 }
